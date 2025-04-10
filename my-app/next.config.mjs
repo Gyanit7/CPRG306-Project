@@ -4,7 +4,7 @@ const nextConfig = {
       remotePatterns: [
         {
           protocol: "https",
-          hostname: "api.escuelajs.co",
+          hostname: "cdn.dummyjson.com",
         },
         {
           protocol: "https",

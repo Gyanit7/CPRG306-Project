@@ -8,16 +8,18 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  name          String?
-  email         String   @unique
-  emailVerified DateTime?
-  image         String?
-  role          String   @default("user")
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  firstName String
+  lastName  String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
 
-  accounts      Account[]
-  sessions      Session[]
+  accounts  Account[]
+  sessions  Session[]
 }
+
+
 
 model Account {
   id                String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -83,3 +85,4 @@ model Order {
   total     Float
   createdAt DateTime @default(now())
 }
+

@@ -1,46 +1,40 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
 import { useCart } from "../cart/CartContext";
+import { useState } from "react";
 
 export default function ProductCard({ product }) {
   const { addToCart } = useCart();
-  const [showAdded, setShowAdded] = useState(false);
+  const [added, setAdded] = useState(false);
 
-  const handleAddToCart = () => {
+  const handleAdd = () => {
     addToCart(product);
-    setShowAdded(true);
-    setTimeout(() => setShowAdded(false), 2000); // hide after 2 seconds
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
   };
 
   return (
     <div className="border rounded-lg shadow p-4 bg-white flex flex-col hover:shadow-md transition relative">
       <div className="bg-white h-60 w-full flex items-center justify-center overflow-hidden rounded mb-4">
         <Image
-          src={product.images[0]}
+          src={product.thumbnail}
           alt={product.title}
           width={220}
           height={220}
           className="object-contain"
         />
       </div>
-
-      <div className="flex-grow">
-        <h2 className="text-lg font-semibold">{product.title}</h2>
-        <p className="text-gray-600 text-sm mb-2">{product.description}</p>
-        <p className="text-green-600 font-bold mb-1">${product.price}</p>
-      </div>
-
+      <h2 className="text-lg font-semibold">{product.title}</h2>
+      <p className="text-gray-600 text-sm">{product.description}</p>
+      <p className="text-green-600 font-bold mb-2">${product.price}</p>
       <button
-        onClick={handleAddToCart}
-        className="mt-3 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+        onClick={handleAdd}
+        className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 mt-auto"
       >
         Add to Cart
       </button>
-
-      {/* ✅ Confirmation message */}
-      {showAdded && (
-        <span className="absolute top-3 right-3 bg-green-500 text-white text-sm px-3 py-1 rounded shadow">
+      {added && (
+        <span className="absolute top-3 right-3 bg-green-500 text-white text-xs px-2 py-1 rounded">
           Added!
         </span>
       )}
