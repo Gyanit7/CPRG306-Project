@@ -25,7 +25,6 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100 text-gray-900 flex flex-col min-h-screen`}
       >
-        {/* ✅ Use the client-only Providers wrapper here */}
         <Providers>
           <Navbar />
           <main className="flex-grow p-6">{children}</main>

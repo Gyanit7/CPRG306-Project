@@ -10,9 +10,7 @@ export async function GET(request) {
       return NextResponse.json({ error: "Missing user ID" }, { status: 400 });
     }
 
-    const items = await prisma.cartItem.findMany({
-      where: { userId },
-    });
+    const items = await prisma.cartItem.findMany({ where: { userId } });
 
     const cart = items.map((item) => ({
       id: item.productId,
@@ -23,7 +21,7 @@ export async function GET(request) {
 
     return NextResponse.json({ cart });
   } catch (err) {
-    console.error("🔥 Load cart error:", err);
+    console.error("Load cart error:", err);
     return NextResponse.json({ error: "Failed to load cart" }, { status: 500 });
   }
 }

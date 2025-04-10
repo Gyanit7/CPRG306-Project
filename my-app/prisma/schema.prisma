@@ -13,62 +13,12 @@ model User {
   lastName  String
   email     String   @unique
   password  String
+  role      String   @default("user")
   createdAt DateTime @default(now())
-
-  accounts  Account[]
-  sessions  Session[]
 }
 
 
 
-model Account {
-  id                String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String?
-  access_token      String?
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?
-  session_state     String?
-
-  user User @relation(fields: [userId], references: [id])
-}
-
-model Session {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-
-  user User @relation(fields: [userId], references: [id])
-}
-
-model VerificationToken {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
-}
-
-
-model Product {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  description String
-  price       Float
-  size        String?     // Optional
-  image       String?
-  inStock     Boolean     @default(true)
-  releaseDate DateTime
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-}
 
 model CartItem {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -77,8 +27,10 @@ model CartItem {
   title     String
   price     Float
   quantity  Int
-  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
 }
+
 
 
 model Order {

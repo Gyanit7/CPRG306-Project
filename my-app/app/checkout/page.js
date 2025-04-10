@@ -1,3 +1,12 @@
+/*
+ * CheckoutPage.js
+ *
+ * This component manages the checkout process. It lists the user's cart items,
+ * calculates the total price, and allows the user to place an order. On successful
+ * checkout, it clears the cart and redirects to the order history page.
+ */
+
+
 "use client";
 
 import { useCart } from "../cart/CartContext";
@@ -6,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function CheckoutPage() {
-  const { cartItems, clearCart } = useCart();
+  const { cartItems, clearCart } = useCart(); // Get cart data and clear function from context
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -15,11 +24,13 @@ export default function CheckoutPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [orderSuccess, setOrderSuccess] = useState(false);
 
+  // Calculate total price from cart items
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
 
+  // Handle checkout process
   const handleCheckout = async () => {
     if (!session) {
       setErrorMessage("You must be logged in to checkout.");
@@ -46,10 +57,10 @@ export default function CheckoutPage() {
         setErrorMessage(data.error || "Something went wrong.");
       } else {
         setOrderSuccess(true);
-        clearCart();
-        setMessage("Order placed successfully!");
+        clearCart(); // Clear cart after successful order
+        setMessage("Order placed successfully.");
 
-        // Redirect after short delay
+        // Redirect to order history after a short delay
         setTimeout(() => router.push("/orders"), 3000);
       }
     } catch (err) {
@@ -65,7 +76,7 @@ export default function CheckoutPage() {
 
       {orderSuccess && (
         <div className="text-center bg-green-100 border border-green-300 text-green-700 p-6 rounded mb-6">
-          <h2 className="text-xl font-semibold mb-2">🎉 Order Confirmed!</h2>
+          <h2 className="text-xl font-semibold mb-2">Order Confirmed</h2>
           <p>Your order has been placed. Redirecting to your orders...</p>
         </div>
       )}
@@ -74,6 +85,7 @@ export default function CheckoutPage() {
         <p className="text-center text-gray-600">Your cart is empty.</p>
       ) : (
         <div className="space-y-4">
+          {/* Display all cart items */}
           {cartItems.map((item) => (
             <div
               key={item.id}
@@ -91,11 +103,13 @@ export default function CheckoutPage() {
             </div>
           ))}
 
+          {/* Show total price */}
           <div className="flex justify-between text-lg font-semibold mt-4 border-t pt-4">
             <span>Total:</span>
             <span>${totalPrice.toFixed(2)}</span>
           </div>
 
+          {/* Checkout button */}
           <button
             onClick={handleCheckout}
             disabled={isSubmitting}
@@ -104,10 +118,12 @@ export default function CheckoutPage() {
             {isSubmitting ? "Placing Order..." : "Place Order"}
           </button>
 
+          {/* Display error message if any */}
           {errorMessage && (
             <p className="text-red-600 text-sm text-center mt-3">{errorMessage}</p>
           )}
 
+          {/* Display success message if any */}
           {message && (
             <p className="text-blue-600 text-sm text-center mt-3">{message}</p>
           )}

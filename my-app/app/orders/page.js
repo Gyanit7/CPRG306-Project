@@ -1,3 +1,11 @@
+/**
+ * Orders/page.js
+ *
+ * Displays the current user's order history.
+ * Fetches orders from the API using the logged-in user's session.
+ * If the user is not logged in, a message prompts them to log in.
+ */
+
 "use client";
 
 import { useSession } from "next-auth/react";
@@ -8,6 +16,7 @@ export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Fetch orders when the user session is available
   useEffect(() => {
     const fetchOrders = async () => {
       if (session?.user) {
@@ -26,10 +35,12 @@ export default function OrdersPage() {
     fetchOrders();
   }, [session]);
 
+  // Show loading message while fetching session or orders
   if (status === "loading" || loading) {
     return <p className="p-6 text-center text-gray-500">Loading your orders...</p>;
   }
 
+  // If no session, prompt login
   if (!session) {
     return (
       <div className="p-6 text-center text-gray-700">
@@ -42,6 +53,7 @@ export default function OrdersPage() {
     <section className="p-6 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-6 text-blue-700">Your Orders</h1>
 
+      {/* Show message if no orders exist */}
       {orders.length === 0 ? (
         <p className="text-gray-700">No orders found.</p>
       ) : (
@@ -57,10 +69,12 @@ export default function OrdersPage() {
                 <strong className="text-gray-700">Items:</strong>{" "}
                 <span className="text-gray-700">{order.items.length}</span>
               </p>
+
               <p>
                 <strong className="text-gray-700">Total:</strong>{" "}
                 <span className="text-gray-700">${order.total.toFixed(2)}</span>
               </p>
+
               <p className="text-sm text-gray-500">
                 <strong>Placed on:</strong>{" "}
                 {new Date(order.createdAt).toLocaleString()}

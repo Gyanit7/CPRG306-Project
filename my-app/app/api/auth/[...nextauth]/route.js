@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import prisma from "@/lib/prisma"; // make sure this points to your working Prisma client
+import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
 export const authOptions = {
@@ -33,23 +33,38 @@ export const authOptions = {
           throw new Error("Invalid email or password");
         }
 
+        // Attach role to the returned session object
         return {
           id: user.id,
           name: `${user.firstName} ${user.lastName}`,
           email: user.email,
+          role: user.role || "user", // default to "user" if not set
         };
       },
     }),
   ],
+
   pages: {
-    signIn: "/login", 
+    signIn: "/login", // Custom login page
   },
+
   session: {
     strategy: "jwt",
   },
+
   callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = user.role;
+      }
+      return token;
+    },
+
     async session({ session, token }) {
-      session.user.id = token.sub;
+      if (session.user) {
+        session.user.id = token.sub;
+        session.user.role = token.role;
+      }
       return session;
     },
   },
