@@ -74,9 +74,12 @@ model CartItem {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   userId    String
   productId String
+  title     String
+  price     Float
   quantity  Int
   createdAt DateTime @default(now())
 }
+
 
 model Order {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId

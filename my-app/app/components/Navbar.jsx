@@ -16,6 +16,13 @@ export default function Navbar() {
       <div className="flex gap-6 items-center">
         <Link href="/" className="text-gray-700 font-medium hover:text-blue-600">Home</Link>
         <Link href="/products" className="text-gray-700 font-medium hover:text-blue-600">Products</Link>
+
+        {session?.user && (
+          <Link href="/orders" className="text-gray-700 font-medium hover:text-blue-600">
+            Orders
+          </Link>
+        )}
+
         <Link href="/cart" className="relative">
           <ShoppingCart className="w-6 h-6 text-blue-600 hover:text-blue-800" />
           {cartCount > 0 && (
@@ -25,7 +32,6 @@ export default function Navbar() {
           )}
         </Link>
 
-        {/* User Info */}
         {session?.user ? (
           <div className="flex items-center gap-2">
             <span className="text-gray-600 text-sm">{session.user.name}</span>

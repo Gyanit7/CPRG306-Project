@@ -71,16 +71,32 @@ export default function SignUpPage() {
 
   return (
     <div className="max-w-md mx-auto mt-16 bg-white p-8 rounded-lg shadow">
-      <h1 className="text-2xl font-bold mb-6 text-center text-blue-600">Create Your Account</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center text-blue-600">
+        Create Your Account
+      </h1>
 
       {submitted ? (
-        <p className="text-green-600 text-center font-medium">Thank you for signing up!</p>
+        <div className="text-center space-y-4">
+          <p className="text-green-600 font-medium">
+            Thank you for signing up!
+          </p>
+          <a
+            href="/login"
+            className="inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+          >
+            Log In
+          </a>
+        </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
-          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+          {error && (
+            <p className="text-red-500 text-sm text-center">{error}</p>
+          )}
 
           <div>
-            <label className="block font-medium text-gray-700">First Name</label>
+            <label className="block font-medium text-gray-700">
+              First Name
+            </label>
             <input
               type="text"
               name="firstName"
@@ -104,7 +120,9 @@ export default function SignUpPage() {
           </div>
 
           <div>
-            <label className="block font-medium text-gray-700">Email Address</label>
+            <label className="block font-medium text-gray-700">
+              Email Address
+            </label>
             <input
               type="email"
               name="email"

@@ -2,6 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import LoginPrompt from "./components/LoginPrompt";
+import Link from "next/link";
 
 export default function HomePage() {
   const { data: session } = useSession();
@@ -12,11 +13,20 @@ export default function HomePage() {
         {session ? `Welcome back, ${session.user.name}!` : "Welcome to E-Zone"}
       </h1>
 
-      <p className="text-lg text-white-600 mb-8">
+      <p className="text-lg text-gray-600 mb-8">
         Your one-stop shop for the latest and greatest electronic devices.
       </p>
 
-      {!session && <LoginPrompt />}
+      {session ? (
+        <Link
+          href="/products"
+          className="inline-block bg-blue-600 text-white px-6 py-2 rounded shadow hover:bg-blue-700 transition"
+        >
+          Shop Now
+        </Link>
+      ) : (
+        <LoginPrompt />
+      )}
     </section>
   );
 }
